@@ -3,12 +3,24 @@ namespace CodyMVC5HomeWork1.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     [MetadataType(typeof(客戶聯絡人MetaData))]
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : IValidatableObject
     {
+        客戶資料Entities db = new 客戶資料Entities();
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Email != null)
+            {
+               if (db.Database.ExecuteSqlCommand(@"SELECT 1 FROM 客戶聯絡人 WHERE Email=@p0 AND 客戶Id<>@p1", new { Email, 客戶Id })>0)
+                {
+                    yield return new ValidationResult("該客戶聯絡人已有相同Email存在", new string[]{ "Email" });
+                }
+            }
+        }
     }
-    
+
     public partial class 客戶聯絡人MetaData
     {
         [Required]
@@ -30,7 +42,7 @@ namespace CodyMVC5HomeWork1.Models
         public string Email { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
-        [RegularExpression(@"\d{4}-\d{6}",ErrorMessage = "手機格式錯誤(e.g. 0911-111111)")]
+        [手機格式驗證(ErrorMessage = "手機格式錯誤(e.g. 0911-111111)")]
         public string 手機 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
