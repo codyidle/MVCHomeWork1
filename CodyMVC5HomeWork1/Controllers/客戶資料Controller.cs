@@ -17,7 +17,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.ToList());
+            return View(db.客戶資料.Where(客 => 客.是否刪除== false).ToList());
         }
 
         // GET: 客戶資料/Details/5
@@ -110,7 +110,8 @@ namespace CodyMVC5HomeWork1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
+            //db.客戶資料.Remove(客戶資料);
+            客戶資料.是否刪除 = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

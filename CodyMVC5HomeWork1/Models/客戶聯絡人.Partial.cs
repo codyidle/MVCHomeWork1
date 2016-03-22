@@ -11,11 +11,26 @@ namespace CodyMVC5HomeWork1.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Email != null)
+            if (Email != null && !是否刪除)
             {
-               if (db.Database.ExecuteSqlCommand(@"SELECT 1 FROM 客戶聯絡人 WHERE Email=@p0 AND 客戶Id<>@p1", new { Email, 客戶Id })>0)
+                if (Id != 0)  //Edit
                 {
-                    yield return new ValidationResult("該客戶聯絡人已有相同Email存在", new string[]{ "Email" });
+                    var data = db.Database.SqlQuery<客戶聯絡人>(@"SELECT * FROM 客戶聯絡人 WHERE Email=@p0 AND 客戶Id = @p1 AND Id<> @p2 AND 是否刪除=0 ", Email, 客戶Id, Id);
+                    if (data.CountAsync().Result > 0)
+                    {
+                        yield return new ValidationResult("該客戶聯絡人已有相同Email存在", new string[] { "Email" });
+                    }
+
+                }
+                else
+                {
+                    var data = db.Database.SqlQuery<客戶聯絡人>(@"SELECT * FROM 客戶聯絡人 WHERE Email=@p0 AND 客戶Id = @p1 AND 是否刪除=0 ", Email, 客戶Id);
+                    if (data.CountAsync().Result > 0)
+                    {
+                        yield return new ValidationResult("該客戶聯絡人已有相同Email存在", new string[] { "Email" });
+                    }
+
+
                 }
             }
         }

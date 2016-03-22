@@ -17,7 +17,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶銀行資訊
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Include(客 => 客.客戶資料);
+            var 客戶銀行資訊 = db.客戶銀行資訊.Where(銀 => 銀.是否刪除 == false).Include(客 => 客.客戶資料);
             return View(客戶銀行資訊.ToList());
         }
 
@@ -115,7 +115,8 @@ namespace CodyMVC5HomeWork1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶銀行資訊 客戶銀行資訊 = db.客戶銀行資訊.Find(id);
-            db.客戶銀行資訊.Remove(客戶銀行資訊);
+            //db.客戶銀行資訊.Remove(客戶銀行資訊);
+            客戶銀行資訊.是否刪除 = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
