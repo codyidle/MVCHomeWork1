@@ -11,6 +11,7 @@ namespace CodyMVC5HomeWork1.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            
             if (Email != null && !是否刪除)
             {
                 if (Id != 0)  //Edit

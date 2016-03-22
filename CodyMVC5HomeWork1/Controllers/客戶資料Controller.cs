@@ -17,7 +17,16 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.Where(客 => 客.是否刪除== false).ToList());
+            return View(db.客戶資料.Where(客 => 客.是否刪除 == false).ToList());
+        }
+        [HttpPost]
+        public ActionResult Index(string KeyWord)
+        {
+            ViewData["KeyWord"] = KeyWord;
+            if (KeyWord != null && KeyWord != "")
+                return View(db.客戶資料.Where(客 => 客.是否刪除 == false && 客.客戶名稱.Contains(KeyWord)).ToList());
+            else
+                return View(db.客戶資料.Where(客 => 客.是否刪除 == false).ToList());
         }
 
         // GET: 客戶資料/Details/5
@@ -124,5 +133,7 @@ namespace CodyMVC5HomeWork1.Controllers
             }
             base.Dispose(disposing);
         }
+
+
     }
 }
