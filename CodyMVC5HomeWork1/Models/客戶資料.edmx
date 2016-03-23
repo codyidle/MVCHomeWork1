@@ -49,11 +49,13 @@
         <EntityType Name="客戶資料數清單">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="客戶名稱" />
+            <PropertyRef Name="銀行帳戶數量" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="客戶名稱" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="聯絡人數量" Type="int" />
-          <Property Name="銀行銀戶數量" Type="int" Nullable="false" />
+          <Property Name="銀行帳戶數量" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_客戶銀行資訊_客戶資料">
           <End Role="客戶資料" Type="Self.客戶資料" Multiplicity="1" />
@@ -88,7 +90,7 @@
     [客戶資料數清單].[Id] AS [Id], 
     [客戶資料數清單].[客戶名稱] AS [客戶名稱], 
     [客戶資料數清單].[聯絡人數量] AS [聯絡人數量], 
-    [客戶資料數清單].[銀行銀戶數量] AS [銀行銀戶數量]
+    [客戶資料數清單].[銀行帳戶數量] AS [銀行帳戶數量]
     FROM [dbo].[客戶資料數清單] AS [客戶資料數清單]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_客戶銀行資訊_客戶資料" Association="Self.FK_客戶銀行資訊_客戶資料">
@@ -188,11 +190,13 @@
         <EntityType Name="客戶資料數清單">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="客戶名稱" />
+            <PropertyRef Name="銀行帳戶數量" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="客戶名稱" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="聯絡人數量" Type="Int32" />
-          <Property Name="銀行銀戶數量" Type="Int32" Nullable="false" />
+          <Property Name="銀行帳戶數量" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -245,7 +249,7 @@
           <EntitySetMapping Name="客戶資料數清單">
             <EntityTypeMapping TypeName="客戶資料Model.客戶資料數清單">
               <MappingFragment StoreEntitySet="客戶資料數清單">
-                <ScalarProperty Name="銀行銀戶數量" ColumnName="銀行銀戶數量" />
+                <ScalarProperty Name="銀行帳戶數量" ColumnName="銀行帳戶數量" />
                 <ScalarProperty Name="聯絡人數量" ColumnName="聯絡人數量" />
                 <ScalarProperty Name="客戶名稱" ColumnName="客戶名稱" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
