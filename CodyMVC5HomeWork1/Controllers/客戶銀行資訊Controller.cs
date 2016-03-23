@@ -17,8 +17,25 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶銀行資訊
         public ActionResult Index()
         {
-            var 客戶銀行資訊 = db.客戶銀行資訊.Where(銀 => 銀.是否刪除 == false).Include(客 => 客.客戶資料);
+            var 客戶銀行資訊 = db.客戶銀行資訊.Where(銀 => 銀.是否刪除 == false && 銀.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
             return View(客戶銀行資訊.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Index(string KeyWord)
+        {
+            ViewData["KeyWord"] = KeyWord;
+            if (KeyWord != null && KeyWord != "")
+            {
+                var 客戶銀行資訊 = db.客戶銀行資訊.Where(銀 => 銀.是否刪除 == false && 銀.銀行名稱.Contains(KeyWord) && 銀.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
+                return View(客戶銀行資訊.ToList());
+            }
+            else
+            {
+                var 客戶銀行資訊 = db.客戶銀行資訊.Where(銀 => 銀.是否刪除 == false && 銀.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
+                return View(客戶銀行資訊.ToList());
+            }
+            
         }
 
         // GET: 客戶銀行資訊/Details/5

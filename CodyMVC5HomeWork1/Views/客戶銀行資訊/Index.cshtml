@@ -5,7 +5,17 @@
 }
 
 <h2>客戶銀行資訊</h2>
-
+@using (Html.BeginForm())
+{
+    <table class="table">
+        <tr>
+            <td>
+                <input type="text" name="KeyWord" value="@ViewData["KeyWord"]">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </td>
+        </tr>
+    </table>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
