@@ -7,6 +7,11 @@ namespace CodyMVC5HomeWork1.Models
     [MetadataType(typeof(客戶資料MetaData))]
     public partial class 客戶資料
     {
+        public class 客戶Category
+        {
+            public string Cid { get; set; }
+            public string Cname { get; set; }
+        }
     }
     
     public partial class 客戶資料MetaData
