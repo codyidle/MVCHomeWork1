@@ -1,4 +1,4 @@
-﻿@model CodyMVC5HomeWork1.Models.客戶資料
+﻿@model CodyMVC5HomeWork1.Models.客戶聯絡人ViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,64 +11,109 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.DisplayNameFor(model => model.CustomerData.客戶名稱)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.客戶名稱)
+            @Html.DisplayFor(model => model.CustomerData.客戶名稱)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.統一編號)
+            @Html.DisplayNameFor(model => model.CustomerData.統一編號)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.統一編號)
+            @Html.DisplayFor(model => model.CustomerData.統一編號)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.電話)
+            @Html.DisplayNameFor(model => model.CustomerData.電話)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.電話)
+            @Html.DisplayFor(model => model.CustomerData.電話)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.傳真)
+            @Html.DisplayNameFor(model => model.CustomerData.傳真)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.傳真)
+            @Html.DisplayFor(model => model.CustomerData.傳真)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.地址)
+            @Html.DisplayNameFor(model => model.CustomerData.地址)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.地址)
+            @Html.DisplayFor(model => model.CustomerData.地址)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.CustomerData.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.客戶分類)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.客戶分類)
+            @Html.DisplayFor(model => model.CustomerData.Email)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@using (Html.BeginForm())
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.職稱)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.姓名)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.手機)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.電話)
+        </th>
+        <th></th>
+    </tr>
+@{ var data = Model.ContactsData.ToArray();}
+@for (var i = 0; i < data.Length; i++)
+{
+        <tr>
+            <td>
+                @Html.HiddenFor(modelItem => data[i].Id)
+                @Html.HiddenFor(modelItem => data[i].客戶Id)
+                @Html.EditorFor(modelItem => data[i].職稱)
+                @Html.ValidationMessageFor(modelItem => data[i].職稱, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => data[i].姓名)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => data[i].Email)
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => data[i].手機)
+                @Html.ValidationMessageFor(modelItem => data[i].手機, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => data[i].電話)
+                @Html.ValidationMessageFor(modelItem => data[i].電話, "", new { @class = "text-danger" })
+            </td>
+
+
+        </tr>
+}
+
+</table>
+<input type="submit" value="更新" />
+    }

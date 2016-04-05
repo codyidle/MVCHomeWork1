@@ -56,12 +56,45 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
-            if (客戶資料 == null)
+            var customer = repo客戶資料.Find(id.Value);
+            var contacts = repo客戶聯絡人.All().Where(p => p.客戶Id == id.Value);
+            客戶聯絡人ViewModel contactsdetail = new 客戶聯絡人ViewModel();
+            contactsdetail.CustomerData = customer;
+            contactsdetail.ContactsData = contacts;
+
+            return View(contactsdetail);
+        }
+
+        [HttpPost]
+        public ActionResult Details(IList<客戶聯絡人ViewModel> data)
+        {
+            if (ModelState.IsValid )
             {
-                return HttpNotFound();
+                foreach (var item in data)
+                {
+
+                    var Contact = repo客戶聯絡人.Find(item.Id);
+
+                    Contact.職稱 = item.職稱;
+
+                    Contact.手機 = item.手機;
+
+                    Contact.電話 = item.電話;
+
+                }
+                repo客戶聯絡人.UnitOfWork.Commit();
+
+                return RedirectToAction("Index", "客戶資料");
             }
-            return View(客戶資料);
+
+
+            var customer = repo客戶資料.Find(data[0].客戶Id);
+            var contacts = repo客戶聯絡人.All().Where(p => p.客戶Id == data[0].客戶Id);
+            客戶聯絡人ViewModel contactsdetail = new 客戶聯絡人ViewModel();
+            contactsdetail.CustomerData = customer;
+            contactsdetail.ContactsData = contacts;
+
+            return View(contactsdetail);
         }
 
         // GET: 客戶資料/Create

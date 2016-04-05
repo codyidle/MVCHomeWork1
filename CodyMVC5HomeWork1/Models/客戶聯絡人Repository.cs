@@ -11,6 +11,7 @@ namespace CodyMVC5HomeWork1.Models
             return this.All().FirstOrDefault(p => p.Id == id);
         }
 
+
         public override IQueryable<客戶聯絡人> All()
         {
             return base.All().Where(聯 => 聯.是否刪除 == false && 聯.客戶資料.是否刪除 == false);
