@@ -10,14 +10,14 @@ using CodyMVC5HomeWork1.Models;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
-    public class 客戶聯絡人Controller : Controller
+    public class 客戶聯絡人Controller : BaseController
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Where(聯 => 聯.是否刪除 == false  && 聯.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
+            var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
             return View(客戶聯絡人.ToList());
         }
         [HttpPost]
@@ -26,12 +26,12 @@ namespace CodyMVC5HomeWork1.Controllers
             ViewData["KeyWord"] = KeyWord;
             if (KeyWord != null && KeyWord != "")
             {
-                var 客戶聯絡人 = db.客戶聯絡人.Where(聯 => 聯.是否刪除 == false && 聯.姓名.Contains(KeyWord) && 聯.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
+                var 客戶聯絡人 = repo客戶聯絡人.All().Where(聯 =>  聯.姓名.Contains(KeyWord) ).Include(客 => 客.客戶資料);
                 return View(客戶聯絡人.ToList());
             }
             else
             {
-                var 客戶聯絡人 = db.客戶聯絡人.Where(聯 => 聯.是否刪除 == false && 聯.客戶資料.是否刪除 == false).Include(客 => 客.客戶資料);
+                var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
                 return View(客戶聯絡人.ToList());
             }
         }
@@ -43,7 +43,7 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -54,7 +54,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(客 => 客.是否刪除 == false), "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱");
             return View();
         }
 
@@ -67,12 +67,12 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                repo客戶聯絡人.Add(客戶聯絡人);
+                repo客戶聯絡人.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(客 => 客.是否刪除 == false), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -83,12 +83,12 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(客 => 客.是否刪除 == false), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -101,11 +101,12 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                var db客戶資料 = (客戶資料Entities)repo客戶資料.UnitOfWork.Context;
+                db客戶資料.Entry(客戶聯絡人).State = EntityState.Modified;
+                db客戶資料.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料.Where(客 => 客.是否刪除 == false), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -116,7 +117,7 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -129,10 +130,9 @@ namespace CodyMVC5HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            //db.客戶聯絡人.Remove(客戶聯絡人);
-            客戶聯絡人.是否刪除 = true;
-            db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id);
+            repo客戶聯絡人.Delete(客戶聯絡人);
+            repo客戶聯絡人.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -140,7 +140,7 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo客戶聯絡人.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -10,23 +10,23 @@ using CodyMVC5HomeWork1.Models;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
-    public class 客戶資料Controller : Controller
+    public class 客戶資料Controller : BaseController
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.Where(客 => 客.是否刪除 == false).ToList());
+            return View(repo客戶資料.All().ToList());
         }
         [HttpPost]
         public ActionResult Index(string KeyWord)
         {
             ViewData["KeyWord"] = KeyWord;
             if (KeyWord != null && KeyWord != "")
-                return View(db.客戶資料.Where(客 => 客.是否刪除 == false && 客.客戶名稱.Contains(KeyWord)).ToList());
+                return View(repo客戶資料.All().Where(客 => 客.客戶名稱.Contains(KeyWord)).ToList());
             else
-                return View(db.客戶資料.Where(客 => 客.是否刪除 == false).ToList());
+                return View(repo客戶資料.All().ToList());
         }
 
         // GET: 客戶資料/Details/5
@@ -36,7 +36,7 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -59,8 +59,8 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                repo客戶資料.Add(客戶資料);
+                repo客戶資料.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +74,7 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -91,8 +91,9 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶資料).State = EntityState.Modified;
-                db.SaveChanges();
+                var db客戶資料 = (客戶資料Entities) repo客戶資料.UnitOfWork.Context;
+                db客戶資料.Entry(客戶資料).State = EntityState.Modified;
+                db客戶資料.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -105,7 +106,7 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -118,10 +119,9 @@ namespace CodyMVC5HomeWork1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            //db.客戶資料.Remove(客戶資料);
-            客戶資料.是否刪除 = true;
-            db.SaveChanges();
+            客戶資料 客戶資料 = repo客戶資料.Find(id);
+            repo客戶資料.Delete(客戶資料);
+            repo客戶資料.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -129,7 +129,7 @@ namespace CodyMVC5HomeWork1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo客戶資料.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }
