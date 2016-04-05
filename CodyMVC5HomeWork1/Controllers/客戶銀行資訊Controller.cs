@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CodyMVC5HomeWork1.Models;
+using NPOI.XSSF.UserModel;
+using System.IO;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
@@ -145,6 +147,42 @@ namespace CodyMVC5HomeWork1.Controllers
                 repo客戶銀行資訊.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+
+        public ActionResult Export()
+        {
+            var Workbook = new XSSFWorkbook();
+            var sheet = Workbook.CreateSheet("結果");
+            sheet.CreateRow(0).CreateCell(0).SetCellValue("Id");
+            sheet.GetRow(0).CreateCell(1).SetCellValue("客戶名稱");
+            sheet.GetRow(0).CreateCell(2).SetCellValue("銀行名稱");
+            sheet.GetRow(0).CreateCell(3).SetCellValue("銀行代碼");
+            sheet.GetRow(0).CreateCell(4).SetCellValue("分行代碼");
+            sheet.GetRow(0).CreateCell(5).SetCellValue("帳戶名稱");
+            sheet.GetRow(0).CreateCell(6).SetCellValue("帳戶號碼");
+
+            var data = repo客戶銀行資訊.All();
+            int i = 1;
+            foreach (var item in data)
+            {
+                sheet.CreateRow(i).CreateCell(0).SetCellValue(item.Id);
+                sheet.GetRow(i).CreateCell(1).SetCellValue(item.客戶資料.客戶名稱);
+                sheet.GetRow(i).CreateCell(2).SetCellValue(item.銀行名稱);
+                sheet.GetRow(i).CreateCell(3).SetCellValue(item.銀行代碼);
+                sheet.GetRow(i).CreateCell(4).SetCellValue(item.分行代碼.Value);
+                sheet.GetRow(i).CreateCell(5).SetCellValue(item.帳戶名稱);
+                sheet.GetRow(i).CreateCell(6).SetCellValue(item.帳戶號碼);
+
+                i++;
+            }
+
+            MemoryStream files = new MemoryStream();
+            Workbook.Write(files);
+            files.Close();
+
+            return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
         }
     }
 }
