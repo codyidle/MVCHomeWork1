@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-	
+
+
 namespace CodyMVC5HomeWork1.Models
 {   
 	public  class 客戶聯絡人Repository : EFRepository<客戶聯絡人>, I客戶聯絡人Repository
@@ -9,6 +10,21 @@ namespace CodyMVC5HomeWork1.Models
         public 客戶聯絡人 Find(int id)
         {
             return this.All().FirstOrDefault(p => p.Id == id);
+        }
+
+        public IQueryable<客戶聯絡人> Query(string keyword ,string job)
+        {
+            var data = this.All();
+
+            if (keyword != null && keyword != "")
+                data = data.Where(聯 => 聯.姓名.Contains(keyword));
+
+
+            if (job != null && job != "")
+                data = data.Where(聯 => 聯.職稱 == job);
+
+
+            return data;
         }
 
 
@@ -25,6 +41,21 @@ namespace CodyMVC5HomeWork1.Models
         public override void Delete(客戶聯絡人 entity)
         {
             entity.是否刪除 = true;
+        }
+
+        public List<string> JobList()
+        {
+            var joblist = new List<string>();
+            joblist.Add("");
+
+            var contacts = from 聯 in this.All() group 聯 by 聯.職稱 into o orderby o.Key select o.Key;
+
+            foreach (var  item in contacts)
+            {
+                joblist.Add(item);
+            }
+
+            return joblist;
         }
     }
 

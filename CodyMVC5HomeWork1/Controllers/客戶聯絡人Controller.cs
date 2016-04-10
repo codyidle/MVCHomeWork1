@@ -19,23 +19,35 @@ namespace CodyMVC5HomeWork1.Controllers
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
+            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList());
             var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
             return View(客戶聯絡人.ToList());
         }
         [HttpPost]
-        public ActionResult Index(string KeyWord)
+        public ActionResult Index(FormCollection collection)
         {
-            ViewData["KeyWord"] = KeyWord;
-            if (KeyWord != null && KeyWord != "")
-            {
-                var 客戶聯絡人 = repo客戶聯絡人.All().Where(聯 =>  聯.姓名.Contains(KeyWord) ).Include(客 => 客.客戶資料);
-                return View(客戶聯絡人.ToList());
-            }
-            else
-            {
-                var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
-                return View(客戶聯絡人.ToList());
-            }
+            var keyword= collection["KeyWord"];
+            var joblist = collection["客戶職稱List"];
+
+            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList(), joblist);
+
+            ViewData["KeyWord"] = keyword;
+
+
+
+
+            //    if (keywork != null && keywork != "")
+            //    {
+            //        var 客戶聯絡人 = repo客戶聯絡人.All().Where(聯 =>  聯.姓名.Contains(keywork) ).Include(客 => 客.客戶資料);
+            //        return View(客戶聯絡人.ToList());
+            //    }
+            //    else
+            //    {
+            //        var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
+            //        return View(客戶聯絡人.ToList());
+            //    }
+
+            return View(repo客戶聯絡人.Query(keyword, joblist).ToList());
         }
 
         // GET: 客戶聯絡人/Details/5
