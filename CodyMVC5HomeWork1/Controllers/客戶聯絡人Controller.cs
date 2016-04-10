@@ -51,11 +51,12 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶聯絡人/Details/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                throw new ArgumentException("沒有帶入差數");
             }
             客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)
@@ -91,11 +92,12 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶聯絡人/Edit/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                throw new ArgumentException("沒有帶入差數");
             }
             客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)
@@ -125,11 +127,12 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶聯絡人/Delete/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                throw new ArgumentException("沒有帶入差數");
             }
             客戶聯絡人 客戶聯絡人 = repo客戶聯絡人.Find(id.Value);
             if (客戶聯絡人 == null)

@@ -50,11 +50,12 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Details/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                throw new ArgumentException("沒有帶入差數");
             }
             var customer = repo客戶資料.Find(id.Value);
             var contacts = repo客戶聯絡人.All().Where(p => p.客戶Id == id.Value);
@@ -124,11 +125,12 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Edit/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                throw new ArgumentException("沒有帶入差數");
             }
             客戶資料 客戶資料 = repo客戶資料.Find(id.Value);
             if (客戶資料 == null)
@@ -158,6 +160,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Delete/5
+        [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
