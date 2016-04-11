@@ -17,21 +17,83 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶聯絡人
-        public ActionResult Index()
+        public ActionResult Index(string newSort, string oldSort, string sortDesc, string keyWord, string job)
         {
-            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList());
-            var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.ToList());
+            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
+            {
+                if (sortDesc == "Desc")
+                    sortDesc = "";
+                else
+                    sortDesc = "Desc";
+            }
+            else
+                sortDesc = "";
+
+            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "職稱" : newSort;
+            ViewBag.SortDesc = sortDesc;
+
+            
+            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList(),job);
+            ViewData["KeyWord"] = keyWord;
+            ViewData["Job"] = job;
+
+            var data= repo客戶聯絡人.All().Include(客 => 客.客戶資料).AsEnumerable();
+
+            if (keyWord != null && keyWord != "")
+                data = data.Where(聯 => 聯.姓名.Contains(keyWord));
+
+            if (job != null && job != "")
+                data = data.Where(聯 => 聯.職稱 == job);
+
+            var param = (string)ViewBag.SortBy;
+            var pi = typeof(客戶聯絡人).GetProperty(param);
+
+            if (sortDesc == "Desc")
+                data = data.OrderByDescending(x => pi.GetValue(x, null));
+            else
+                data = data.OrderBy(x => pi.GetValue(x, null));
+
+            return View(data.ToList());
+
         }
         [HttpPost]
-        public ActionResult Index(FormCollection collection)
+        public ActionResult Index(FormCollection collection, string newSort, string oldSort, string sortDesc)
         {
-            var keyword= collection["KeyWord"];
-            var joblist = collection["客戶職稱List"];
+            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
+            {
+                if (sortDesc == "Desc")
+                    sortDesc = "";
+                else
+                    sortDesc = "Desc";
+            }
+            else
+                sortDesc = "";
 
-            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList(), joblist);
+            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "職稱" : newSort;
+            ViewBag.SortDesc = sortDesc;
 
+            var keyword = collection["KeyWord"];
+            var job = collection["客戶職稱List"];
+
+            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList(), job);
             ViewData["KeyWord"] = keyword;
+            ViewData["Job"] = job;
+
+            var data = repo客戶聯絡人.All().Include(客 => 客.客戶資料).AsEnumerable();
+
+            if (keyword != null && keyword != "")
+                data = data.Where(聯 => 聯.姓名.Contains(keyword));
+
+            if (job != null && job != "")
+                data = data.Where(聯 => 聯.職稱 == job);
+
+            var param = (string)ViewBag.SortBy;
+            var pi = typeof(客戶聯絡人).GetProperty(param);
+
+            if (sortDesc == "Desc")
+                data = data.OrderByDescending(x => pi.GetValue(x, null));
+            else
+                data = data.OrderBy(x => pi.GetValue(x, null));
 
 
 
@@ -47,7 +109,7 @@ namespace CodyMVC5HomeWork1.Controllers
             //        return View(客戶聯絡人.ToList());
             //    }
 
-            return View(repo客戶聯絡人.Query(keyword, joblist).ToList());
+            return View(data.ToList());
         }
 
         // GET: 客戶聯絡人/Details/5

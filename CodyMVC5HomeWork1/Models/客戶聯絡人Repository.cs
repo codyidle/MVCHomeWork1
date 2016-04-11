@@ -46,7 +46,7 @@ namespace CodyMVC5HomeWork1.Models
         public List<string> JobList()
         {
             var joblist = new List<string>();
-            joblist.Add("");
+            //joblist.Add("");
 
             var contacts = from 聯 in this.All() group 聯 by 聯.職稱 into o orderby o.Key select o.Key;
 
