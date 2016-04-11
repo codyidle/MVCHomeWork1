@@ -18,21 +18,75 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
-        public ActionResult Index()
+        [HandleError(View = "Error2")]
+        public ActionResult Index(string newSort,string oldSort ,string sortDesc,string keyWord,string category)
         {
             ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname");
-            return View(repo客戶資料.All().ToList());
+
+            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
+            {
+                if (sortDesc == "Desc")
+                    sortDesc = "";
+                else
+                    sortDesc = "Desc";
+            }
+            else
+                sortDesc = "";
+
+            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
+            ViewBag.SortDesc = sortDesc;
+
+            var data = repo客戶資料.All().AsEnumerable();
+
+            if (keyWord != null && keyWord != "")
+                data = data.Where(客 => 客.客戶名稱.Contains(keyWord));
+
+            if (category != null && category != "")
+                data = data.Where(客 => 客.客戶分類 == category);
+
+            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", category);
+            ViewData["KeyWord"] = keyWord;
+            ViewData["Category"] = category;
+
+            var param = (string)ViewBag.SortBy;
+            var pi = typeof(客戶資料).GetProperty(param);
+
+            if (sortDesc == "Desc")
+                data = data.OrderByDescending(x => pi.GetValue(x,null));
+            else
+                data = data.OrderBy(x => pi.GetValue(x, null));
+
+            return View(data.ToList());
         }
+
+ 
+
+        [HandleError(View = "Error2")]
         [HttpPost]
-        public ActionResult Index(FormCollection collection)
+        public ActionResult Index(FormCollection collection, string newSort, string oldSort, string sortDesc)
         {
+            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
+            {
+                if (sortDesc == "Desc")
+                    sortDesc = "";
+                else
+                    sortDesc = "Desc";
+            }
+            else
+                sortDesc = "";
+
+            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
+            ViewBag.SortDesc = sortDesc;
+
+
             var KeyWord = collection["KeyWord"];
             var Category = collection["客戶分類"];
 
             ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", Category);
             ViewData["KeyWord"] = KeyWord;
+            ViewData["Category"] = Category;
 
-            var data = repo客戶資料.All();
+            var data = repo客戶資料.All().AsEnumerable();
 
             if (KeyWord != null && KeyWord != "")
                 data = data.Where(客 => 客.客戶名稱.Contains(KeyWord));
@@ -40,6 +94,14 @@ namespace CodyMVC5HomeWork1.Controllers
             if (Category != null && Category != "")
                 data = data.Where(客 => 客.客戶分類== Category);
 
+
+            var param = (string)ViewBag.SortBy;
+            var pi = typeof(客戶資料).GetProperty(param);
+
+            if (sortDesc == "Desc")
+                data = data.OrderByDescending(x => pi.GetValue(x, null));
+            else
+                data = data.OrderBy(x => pi.GetValue(x, null));
 
             //if (KeyWord != null && KeyWord != "")
             //    return View(repo客戶資料.All().Where(客 => 客.客戶名稱.Contains(KeyWord)).ToList());

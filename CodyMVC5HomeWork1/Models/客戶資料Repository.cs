@@ -39,7 +39,7 @@ namespace CodyMVC5HomeWork1.Models
         public List<客戶資料.客戶Category> CatgoryList()
         {
             var category = new List<客戶資料.客戶Category>();
-            category.Add(new 客戶資料.客戶Category() { Cid = "", Cname = "選擇分類" });
+            //category.Add(new 客戶資料.客戶Category() { Cid = "", Cname = "選擇分類" });
             category.Add(new 客戶資料.客戶Category() { Cid = "1", Cname = "北區" });
             category.Add(new 客戶資料.客戶Category() { Cid = "2", Cname = "中區" });
             category.Add(new 客戶資料.客戶Category() { Cid = "3", Cname = "南區" });
