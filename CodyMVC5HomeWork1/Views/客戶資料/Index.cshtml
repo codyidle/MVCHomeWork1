@@ -13,18 +13,20 @@
             <td>
                 @Html.TextBox("KeyWord")
                 @Html.DropDownList("Category", null,"-請選擇客戶分類-")
-                <input type="submit" id="btnSearch" value="Search" class="btn btn-default" onclick="java: $('#IsExport').val('');" />
-                <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick="java: $('#IsExport').val('Y');" />
+                <input type="submit" id="btnSearch" value="Search" class="btn btn-default" onclick="java: $('#IsExport').val(''); " />
+                <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick="java: $('#IsExport').val('Y'); " />
                 </td>
         </tr>
     </table>
 
 <p>
     @Html.ActionLink("Create New", "Create")
-    @Html.Hidden("IsExport", ViewData["IsExport"])
-    
+    @Html.Hidden("IsExport")
+    @Html.Hidden("newSort")
+    @Html.Hidden("oldSort","客戶資料")
+    @Html.Hidden("sortDesc")
 </p>
-<table class="table">
+<table class="table" id="thistb" name="thistb" >
     <tr>
         <th>
             @*@Html.DisplayNameFor(model => model.客戶名稱)*@
@@ -82,4 +84,31 @@
 }
 
 </table>
+}
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#thistb tr th a").on('click', function () {
+                var href = $(this).get(0).innerText;
+                $('#oldSort').val($('#newSort').val());
+                $('#newSort').val(href);
+                if ($('#oldSort').val() == $('#newSort').val()) {
+                    if ($('#sortDesc').val() == 'Desc')
+                        $('#sortDesc').val('');
+                    else
+                        $('#sortDesc').val('Desc');
+                }
+                else {
+                        $('#sortDesc').val('');
+                }
+                $('#IsExport').val('');
+                document.form1.submit();
+                return false;
+            });
+
+        });
+        //,new { onclick= "$('#oldSort').val($('#newSort').val());  $('#newSort').val($(this).text()); document.form1.submit(); return false;" }
+    </script>
 }

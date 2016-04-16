@@ -23,18 +23,18 @@ namespace CodyMVC5HomeWork1.Controllers
         {
 
 
-            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
-            {
-                if (sortDesc == "Desc")
-                    sortDesc = "";
-                else
-                    sortDesc = "Desc";
-            }
-            else
-                sortDesc = "";
+            //if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
+            //{
+            //    if (sortDesc == "Desc")
+            //        sortDesc = "";
+            //    else
+            //        sortDesc = "Desc";
+            //}
+            //else
+            //    sortDesc = "";
 
-            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
-            ViewBag.SortDesc = sortDesc;
+            newSort = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
+            //ViewBag.SortDesc = sortDesc;
 
             var data = repo客戶資料.Query(KeyWord,Category).AsEnumerable();
 
@@ -43,7 +43,7 @@ namespace CodyMVC5HomeWork1.Controllers
             ViewData["KeyWord"] = KeyWord;
 
 
-            var param = (string)ViewBag.SortBy;
+            var param = newSort;
             var pi = typeof(客戶資料).GetProperty(param);
 
             if (sortDesc == "Desc")
