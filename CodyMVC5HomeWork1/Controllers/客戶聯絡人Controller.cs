@@ -36,7 +36,7 @@ namespace CodyMVC5HomeWork1.Controllers
             
             ViewBag.JobList = new SelectList(repo客戶聯絡人.JobList(), JobList);
             ViewData["KeyWord"] = KeyWord;
-
+            ViewData["IsExport"] = string.Empty;
 
             var data= repo客戶聯絡人.Query(KeyWord,JobList).Include(客 => 客.客戶資料).AsEnumerable();
 

@@ -10,20 +10,18 @@
     <table class="table">
         <tr>
             <td>
-                @*<input type="text" name="KeyWord" value="@ViewData["KeyWord"]">
-                @Html.DropDownList("客戶職稱List")*@
                 @Html.TextBox("KeyWord", ViewData["KeyWord"])
                 @Html.DropDownList("JobList", null, "-請選擇職務-")
 
-                <input type="submit" value="Search" class="btn btn-default" />
-                <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick="java: document.form1.IsExport.value='Y' ;" />
+                <input type="submit" id="btnSearch" value="Search" class="btn btn-default" onclick = "java: $('#IsExport').val('');" />
+                <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick = "java: $('#IsExport').val('Y');" />
             </td>
         </tr>
     </table>
 
 <p>
     @Html.ActionLink("Create New", "Create")   
-    @Html.Hidden("IsExport") ;
+    @Html.Hidden("IsExport",ViewData["IsExport"]) 
 </p>
 <table class="table">
     <tr>
@@ -87,9 +85,11 @@
 
 @section Scripts{
     <script>
-        $(function () {
-            $("#btnExport").click(function () { $("#IsExport").val('Y'); });
-        });
+        //$(function () {
+
+        //    $("#btnExport").click(function () { $("#IsExport").val('Y'); });
+        //    $("#btnExport").click(function () { $("#btnSearch").val('N'); });
+        //});
 
     </script>
 }
