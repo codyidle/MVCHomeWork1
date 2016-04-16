@@ -18,7 +18,7 @@ namespace CodyMVC5HomeWork1.Controllers
 
         // GET: 客戶聯絡人
         [HandleError(View = "Error2")]
-        public ActionResult Index(string newSort, string oldSort, string sortDesc, string KeyWord, string JobList)
+        public ActionResult Index(string newSort, string oldSort, string sortDesc, string KeyWord, string JobList,string IsExport)
         {
             if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
             {
@@ -49,9 +49,50 @@ namespace CodyMVC5HomeWork1.Controllers
             else
                 data = data.OrderBy(x => pi.GetValue(x, null));
 
-            return View(data.ToList());
+            if (IsExport=="Y")
+            {
+                return Export(data);
+            }
+            else
+                return View(data.ToList());
 
         }
+
+        public ActionResult Export(IEnumerable<客戶聯絡人> data)
+        {
+            var Workbook = new XSSFWorkbook();
+            var sheet = Workbook.CreateSheet("結果");
+            sheet.CreateRow(0).CreateCell(0).SetCellValue("Id");
+            sheet.GetRow(0).CreateCell(1).SetCellValue("客戶名稱");
+            sheet.GetRow(0).CreateCell(2).SetCellValue("職稱");
+            sheet.GetRow(0).CreateCell(3).SetCellValue("姓名");
+            sheet.GetRow(0).CreateCell(4).SetCellValue("Email");
+            sheet.GetRow(0).CreateCell(5).SetCellValue("手機");
+            sheet.GetRow(0).CreateCell(6).SetCellValue("電話");
+
+            
+            int i = 1;
+            foreach (var item in data)
+            {
+                sheet.CreateRow(i).CreateCell(0).SetCellValue(item.Id);
+                sheet.GetRow(i).CreateCell(1).SetCellValue(item.客戶資料.客戶名稱);
+                sheet.GetRow(i).CreateCell(2).SetCellValue(item.職稱);
+                sheet.GetRow(i).CreateCell(3).SetCellValue(item.姓名);
+                sheet.GetRow(i).CreateCell(4).SetCellValue(item.Email);
+                sheet.GetRow(i).CreateCell(5).SetCellValue(item.手機);
+                sheet.GetRow(i).CreateCell(6).SetCellValue(item.電話);
+
+                i++;
+            }
+
+            MemoryStream files = new MemoryStream();
+            Workbook.Write(files);
+            files.Close();
+
+            return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
+        }
+
+
         [HttpPost]
         public ActionResult Index(FormCollection collection, string newSort, string oldSort, string sortDesc)
         {
@@ -207,39 +248,5 @@ namespace CodyMVC5HomeWork1.Controllers
             base.Dispose(disposing);
         }
 
-
-        public ActionResult Export()
-        {
-            var Workbook = new XSSFWorkbook();
-            var sheet = Workbook.CreateSheet("結果");
-            sheet.CreateRow(0).CreateCell(0).SetCellValue("Id");
-            sheet.GetRow(0).CreateCell(1).SetCellValue("客戶名稱");
-            sheet.GetRow(0).CreateCell(2).SetCellValue("職稱");
-            sheet.GetRow(0).CreateCell(3).SetCellValue("姓名");
-            sheet.GetRow(0).CreateCell(4).SetCellValue("Email");
-            sheet.GetRow(0).CreateCell(5).SetCellValue("手機");
-            sheet.GetRow(0).CreateCell(6).SetCellValue("電話");
-
-            var data = repo客戶聯絡人.All();
-            int i = 1;
-            foreach (var item in data)
-            {
-                sheet.CreateRow(i).CreateCell(0).SetCellValue(item.Id);
-                sheet.GetRow(i).CreateCell(1).SetCellValue(item.客戶資料.客戶名稱);
-                sheet.GetRow(i).CreateCell(2).SetCellValue(item.職稱);
-                sheet.GetRow(i).CreateCell(3).SetCellValue(item.姓名);
-                sheet.GetRow(i).CreateCell(4).SetCellValue(item.Email);
-                sheet.GetRow(i).CreateCell(5).SetCellValue(item.手機);
-                sheet.GetRow(i).CreateCell(6).SetCellValue(item.電話);
-
-                i++;
-            }
-
-            MemoryStream files = new MemoryStream();
-            Workbook.Write(files);
-            files.Close();
-
-            return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
-        }
     }
 }

@@ -16,13 +16,14 @@
                 @Html.DropDownList("JobList", null, "-請選擇職務-")
 
                 <input type="submit" value="Search" class="btn btn-default" />
+                <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick="java: document.form1.IsExport.value='Y' ;" />
             </td>
         </tr>
     </table>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Export", "Export")
+    @Html.ActionLink("Create New", "Create")   
+    @Html.Hidden("IsExport") ;
 </p>
 <table class="table">
     <tr>
@@ -82,4 +83,13 @@
 }
 
 </table>
+}
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#btnExport").click(function () { $("#IsExport").val('Y'); });
+        });
+
+    </script>
 }
