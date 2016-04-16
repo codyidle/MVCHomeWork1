@@ -17,7 +17,8 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶聯絡人
-        public ActionResult Index(string newSort, string oldSort, string sortDesc, string keyWord, string job)
+        [HandleError(View = "Error2")]
+        public ActionResult Index(string newSort, string oldSort, string sortDesc, string KeyWord, string JobList)
         {
             if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
             {
@@ -33,17 +34,12 @@ namespace CodyMVC5HomeWork1.Controllers
             ViewBag.SortDesc = sortDesc;
 
             
-            ViewBag.客戶職稱List = new SelectList(repo客戶聯絡人.JobList(),job);
-            ViewData["KeyWord"] = keyWord;
-            ViewData["Job"] = job;
+            ViewBag.JobList = new SelectList(repo客戶聯絡人.JobList(), JobList);
+            ViewData["KeyWord"] = KeyWord;
 
-            var data= repo客戶聯絡人.All().Include(客 => 客.客戶資料).AsEnumerable();
 
-            if (keyWord != null && keyWord != "")
-                data = data.Where(聯 => 聯.姓名.Contains(keyWord));
+            var data= repo客戶聯絡人.Query(KeyWord,JobList).Include(客 => 客.客戶資料).AsEnumerable();
 
-            if (job != null && job != "")
-                data = data.Where(聯 => 聯.職稱 == job);
 
             var param = (string)ViewBag.SortBy;
             var pi = typeof(客戶聯絡人).GetProperty(param);
@@ -95,19 +91,6 @@ namespace CodyMVC5HomeWork1.Controllers
             else
                 data = data.OrderBy(x => pi.GetValue(x, null));
 
-
-
-
-            //    if (keywork != null && keywork != "")
-            //    {
-            //        var 客戶聯絡人 = repo客戶聯絡人.All().Where(聯 =>  聯.姓名.Contains(keywork) ).Include(客 => 客.客戶資料);
-            //        return View(客戶聯絡人.ToList());
-            //    }
-            //    else
-            //    {
-            //        var 客戶聯絡人 = repo客戶聯絡人.All().Include(客 => 客.客戶資料);
-            //        return View(客戶聯絡人.ToList());
-            //    }
 
             return View(data.ToList());
         }

@@ -5,50 +5,50 @@
 }
 
 <h2>客戶聯絡人</h2>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index","客戶聯絡人",FormMethod.Get,new { name="form1"}))
 {
     <table class="table">
         <tr>
             <td>
                 @*<input type="text" name="KeyWord" value="@ViewData["KeyWord"]">
                 @Html.DropDownList("客戶職稱List")*@
-                @Html.TextBox("KeyWord", ViewData["KeyWord"], new { newSort = ViewBag.SortBy, oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
-                @Html.DropDownList("客戶職稱List", null, "請選擇", new { newSort = ViewBag.SortBy, oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+                @Html.TextBox("KeyWord", ViewData["KeyWord"])
+                @Html.DropDownList("JobList", null, "-請選擇職務-")
 
                 <input type="submit" value="Search" class="btn btn-default" />
             </td>
         </tr>
     </table>
-}
+
 <p>
     @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("匯出所有資料", "Export")
+    @Html.ActionLink("Export", "Export")
 </p>
 <table class="table">
     <tr>
         <th>
             @*@Html.DisplayNameFor(model => model.職稱)*@
-            @Html.ActionLink("職稱", "Index", new { newSort = "職稱", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("職稱", "Index")
         </th>
             <th>
             @*@Html.DisplayNameFor(model => model.姓名)*@
-            @Html.ActionLink("姓名", "Index", new { newSort = "姓名", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("姓名", "Index")
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Email)*@
-            @Html.ActionLink("Email", "Index", new { newSort = "Email", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("Email", "Index")
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.手機)*@
-            @Html.ActionLink("手機", "Index", new { newSort = "手機", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("手機", "Index")
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.電話)*@
-            @Html.ActionLink("電話", "Index", new { newSort = "電話", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("電話", "Index")
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)*@
-            @Html.ActionLink("客戶名稱", "Index", new { newSort = "客戶名稱", oldSort = ViewBag.SortBy, sortDesc = ViewBag.SortDesc, keyWord = ViewData["KeyWord"], job = ViewData["Job"] })
+            @Html.ActionLink("客戶名稱", "Index")
         </th>
         <th></th>
     </tr>
@@ -82,3 +82,4 @@
 }
 
 </table>
+}
