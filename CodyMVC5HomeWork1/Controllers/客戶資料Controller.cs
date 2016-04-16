@@ -19,9 +19,9 @@ namespace CodyMVC5HomeWork1.Controllers
 
         // GET: 客戶資料
         [HandleError(View = "Error2")]
-        public ActionResult Index(string newSort,string oldSort ,string sortDesc,string keyWord,string category)
+        public ActionResult Index(string newSort,string oldSort ,string sortDesc,string KeyWord, string Category,string IsExport)
         {
-            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname");
+
 
             if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
             {
@@ -36,17 +36,12 @@ namespace CodyMVC5HomeWork1.Controllers
             ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
             ViewBag.SortDesc = sortDesc;
 
-            var data = repo客戶資料.All().AsEnumerable();
+            var data = repo客戶資料.Query(KeyWord,Category).AsEnumerable();
 
-            if (keyWord != null && keyWord != "")
-                data = data.Where(客 => 客.客戶名稱.Contains(keyWord));
 
-            if (category != null && category != "")
-                data = data.Where(客 => 客.客戶分類 == category);
+            ViewBag.Category = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", Category);
+            ViewData["KeyWord"] = KeyWord;
 
-            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", category);
-            ViewData["KeyWord"] = keyWord;
-            ViewData["Category"] = category;
 
             var param = (string)ViewBag.SortBy;
             var pi = typeof(客戶資料).GetProperty(param);
@@ -56,10 +51,46 @@ namespace CodyMVC5HomeWork1.Controllers
             else
                 data = data.OrderBy(x => pi.GetValue(x, null));
 
-            return View(data.ToList());
+            if (IsExport == "Y")
+            {
+                return Export(data);
+            }
+            else
+                return View(data.ToList());
         }
 
- 
+        public ActionResult Export(IEnumerable<客戶資料> data)
+        {
+            var Workbook = new XSSFWorkbook();
+            var sheet = Workbook.CreateSheet("結果");
+            sheet.CreateRow(0).CreateCell(0).SetCellValue("Id");
+            sheet.GetRow(0).CreateCell(1).SetCellValue("客戶名稱");
+            sheet.GetRow(0).CreateCell(2).SetCellValue("統一編號");
+            sheet.GetRow(0).CreateCell(3).SetCellValue("電話");
+            sheet.GetRow(0).CreateCell(4).SetCellValue("傳真");
+            sheet.GetRow(0).CreateCell(5).SetCellValue("地址");
+            sheet.GetRow(0).CreateCell(6).SetCellValue("Email");
+
+            int i = 1;
+            foreach (var item in data)
+            {
+                sheet.CreateRow(i).CreateCell(0).SetCellValue(item.Id);
+                sheet.GetRow(i).CreateCell(1).SetCellValue(item.客戶名稱);
+                sheet.GetRow(i).CreateCell(2).SetCellValue(item.統一編號);
+                sheet.GetRow(i).CreateCell(3).SetCellValue(item.電話);
+                sheet.GetRow(i).CreateCell(4).SetCellValue(item.傳真);
+                sheet.GetRow(i).CreateCell(5).SetCellValue(item.地址);
+                sheet.GetRow(i).CreateCell(6).SetCellValue(item.Email);
+
+                i++;
+            }
+
+            MemoryStream files = new MemoryStream();
+            Workbook.Write(files);
+            files.Close();
+
+            return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
+        }
 
         [HandleError(View = "Error2")]
         [HttpPost]
@@ -260,38 +291,6 @@ namespace CodyMVC5HomeWork1.Controllers
 
 
 
-        public ActionResult Export()
-        {
-            var Workbook = new XSSFWorkbook();
-            var sheet = Workbook.CreateSheet("結果");
-            sheet.CreateRow(0).CreateCell(0).SetCellValue("Id");
-            sheet.GetRow(0).CreateCell(1).SetCellValue("客戶名稱");
-            sheet.GetRow(0).CreateCell(2).SetCellValue("統一編號");
-            sheet.GetRow(0).CreateCell(3).SetCellValue("電話");
-            sheet.GetRow(0).CreateCell(4).SetCellValue("傳真");
-            sheet.GetRow(0).CreateCell(5).SetCellValue("地址");
-            sheet.GetRow(0).CreateCell(6).SetCellValue("Email");
 
-            var data = repo客戶資料.All();
-            int i = 1;
-            foreach (var item in data)
-            {
-                sheet.CreateRow(i).CreateCell(0).SetCellValue(item.Id);
-                sheet.GetRow(i).CreateCell(1).SetCellValue(item.客戶名稱);
-                sheet.GetRow(i).CreateCell(2).SetCellValue(item.統一編號);
-                sheet.GetRow(i).CreateCell(3).SetCellValue(item.電話);
-                sheet.GetRow(i).CreateCell(4).SetCellValue(item.傳真);
-                sheet.GetRow(i).CreateCell(5).SetCellValue(item.地址);
-                sheet.GetRow(i).CreateCell(6).SetCellValue(item.Email);
-
-                i++;
-            }
-
-            MemoryStream files = new MemoryStream();
-            Workbook.Write(files);
-            files.Close();
-
-            return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
-        }
     }
 }

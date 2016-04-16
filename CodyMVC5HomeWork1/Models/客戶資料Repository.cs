@@ -11,6 +11,18 @@ namespace CodyMVC5HomeWork1.Models
             return this.All().FirstOrDefault(p => p.Id == id);
         }
 
+        public IQueryable<客戶資料> Query(string keyword, string category)
+        {
+            var data= this.All();
+            if (keyword != null && keyword != "")
+                data = data.Where(客 => 客.客戶名稱.Contains(keyword));
+
+            if (category != null && category != "")
+                data = data.Where(客 => 客.客戶分類 == category);
+
+            return data;
+        }
+
         public override IQueryable<客戶資料> All()
         {
             return base.All().Where(客 => 客.是否刪除== false);
