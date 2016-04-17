@@ -20,29 +20,20 @@ namespace CodyMVC5HomeWork1.Controllers
         [HandleError(View = "Error2")]
         public ActionResult Index(string newSort, string oldSort, string sortDesc, string KeyWord, string JobList,string IsExport)
         {
-            if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
-            {
-                if (sortDesc == "Desc")
-                    sortDesc = "";
-                else
-                    sortDesc = "Desc";
-            }
-            else
-                sortDesc = "";
 
-            ViewBag.SortBy = string.IsNullOrEmpty(newSort) ? "職稱" : newSort;
-            ViewBag.SortDesc = sortDesc;
+            newSort = string.IsNullOrEmpty(newSort) ? "職稱" : newSort;
 
             
             ViewBag.JobList = new SelectList(repo客戶聯絡人.JobList(), JobList);
-            ViewData["KeyWord"] = KeyWord;
-            ViewData["IsExport"] = string.Empty;
 
             var data= repo客戶聯絡人.Query(KeyWord,JobList).Include(客 => 客.客戶資料).AsEnumerable();
 
+            if (newSort == "客戶名稱")
+                newSort = "客戶Id";
 
-            var param = (string)ViewBag.SortBy;
+            var param = newSort;
             var pi = typeof(客戶聯絡人).GetProperty(param);
+
 
             if (sortDesc == "Desc")
                 data = data.OrderByDescending(x => pi.GetValue(x, null));

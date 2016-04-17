@@ -23,18 +23,7 @@ namespace CodyMVC5HomeWork1.Controllers
         {
 
 
-            //if (!string.IsNullOrEmpty(newSort) && newSort == oldSort)
-            //{
-            //    if (sortDesc == "Desc")
-            //        sortDesc = "";
-            //    else
-            //        sortDesc = "Desc";
-            //}
-            //else
-            //    sortDesc = "";
-
             newSort = string.IsNullOrEmpty(newSort) ? "客戶名稱" : newSort;
-            //ViewBag.SortDesc = sortDesc;
 
             var data = repo客戶資料.Query(KeyWord,Category).AsEnumerable();
 

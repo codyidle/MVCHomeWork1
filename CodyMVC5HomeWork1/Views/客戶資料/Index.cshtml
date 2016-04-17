@@ -11,8 +11,8 @@
     <table class="table">
         <tr>
             <td>
-                @Html.TextBox("KeyWord")
-                @Html.DropDownList("Category", null,"-請選擇客戶分類-")
+                客戶名稱: @Html.TextBox("KeyWord")
+                客戶分類: @Html.DropDownList("Category", null,"-請選擇-")
                 <input type="submit" id="btnSearch" value="Search" class="btn btn-default" onclick="java: $('#IsExport').val(''); " />
                 <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick="java: $('#IsExport').val('Y'); " />
                 </td>

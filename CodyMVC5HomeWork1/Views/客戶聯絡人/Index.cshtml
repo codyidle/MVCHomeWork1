@@ -10,8 +10,8 @@
     <table class="table">
         <tr>
             <td>
-                @Html.TextBox("KeyWord", ViewData["KeyWord"])
-                @Html.DropDownList("JobList", null, "-請選擇職務-")
+                姓名: @Html.TextBox("KeyWord", ViewData["KeyWord"] )
+                職稱: @Html.DropDownList("JobList", null, "-請選擇-")
 
                 <input type="submit" id="btnSearch" value="Search" class="btn btn-default" onclick = "java: $('#IsExport').val('');" />
                 <input type="submit" id="btnExport" value="Export" class="btn btn-default" onclick = "java: $('#IsExport').val('Y');" />
@@ -21,17 +21,20 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")   
-    @Html.Hidden("IsExport",ViewData["IsExport"]) 
+    @Html.Hidden("IsExport") 
+    @Html.Hidden("newSort")
+    @Html.Hidden("oldSort", "客戶資料")
+    @Html.Hidden("sortDesc")
 </p>
-<table class="table">
+<table class="table" id="thistb" name="thistb">
     <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.姓名)*@
+            @Html.ActionLink("姓名", "Index")
+        </th>
         <th>
             @*@Html.DisplayNameFor(model => model.職稱)*@
             @Html.ActionLink("職稱", "Index")
-        </th>
-            <th>
-            @*@Html.DisplayNameFor(model => model.姓名)*@
-            @Html.ActionLink("姓名", "Index")
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Email)*@
@@ -47,7 +50,7 @@
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)*@
-            @Html.ActionLink("客戶名稱", "Index")
+            @Html.ActionLink("客戶名稱", "Index",new { value="客戶Id"})
         </th>
         <th></th>
     </tr>
@@ -85,11 +88,26 @@
 
 @section Scripts{
     <script>
-        //$(function () {
+        $(function () {
+            $("#thistb tr th a").on('click', function () {
+                var href = $(this).get(0).innerText;
+                $('#oldSort').val($('#newSort').val());
+                $('#newSort').val(href);
+                if ($('#oldSort').val() == $('#newSort').val()) {
+                    if ($('#sortDesc').val() == 'Desc')
+                        $('#sortDesc').val('');
+                    else
+                        $('#sortDesc').val('Desc');
+                }
+                else {
+                    $('#sortDesc').val('');
+                }
+                $('#IsExport').val('');
+                document.form1.submit();
+                return false;
+            });
 
-        //    $("#btnExport").click(function () { $("#IsExport").val('Y'); });
-        //    $("#btnExport").click(function () { $("#btnSearch").val('N'); });
-        //});
+        });
 
     </script>
 }
