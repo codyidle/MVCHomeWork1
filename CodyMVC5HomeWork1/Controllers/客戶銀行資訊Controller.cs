@@ -17,12 +17,14 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶銀行資訊
+        [Action執行時間]
         public ActionResult Index()
         {
             var 客戶銀行資訊 = repo客戶銀行資訊.All().Include(客 => 客.客戶資料);
             return View(客戶銀行資訊.ToList());
         }
 
+        [Action執行時間]
         [HttpPost]
         public ActionResult Index(string KeyWord)
         {
@@ -40,6 +42,7 @@ namespace CodyMVC5HomeWork1.Controllers
             
         }
 
+        [Action執行時間]
         // GET: 客戶銀行資訊/Details/5
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Details(int? id)
@@ -57,6 +60,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶銀行資訊/Create
+        [Action執行時間]
         public ActionResult Create()
         {
             ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱");
@@ -66,6 +70,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶銀行資訊/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
@@ -82,6 +87,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶銀行資訊/Edit/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
         {
@@ -101,6 +107,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶銀行資訊/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
@@ -117,6 +124,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶銀行資訊/Delete/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Delete(int? id)
         {
@@ -133,6 +141,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // POST: 客戶銀行資訊/Delete/5
+        [Action執行時間]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -142,6 +151,7 @@ namespace CodyMVC5HomeWork1.Controllers
             repo客戶銀行資訊.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -153,7 +163,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
 
-
+        [Action執行時間]
         public ActionResult Export()
         {
             var Workbook = new XSSFWorkbook();

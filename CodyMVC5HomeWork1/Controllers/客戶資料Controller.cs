@@ -18,6 +18,7 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
+        [Action執行時間]
         [HandleError(View = "Error2")]
         public ActionResult Index(string newSort,string oldSort ,string sortDesc,string KeyWord, string Category,string IsExport)
         {
@@ -48,6 +49,7 @@ namespace CodyMVC5HomeWork1.Controllers
                 return View(data.ToList());
         }
 
+        [Action執行時間]
         public ActionResult Export(IEnumerable<客戶資料> data)
         {
             var Workbook = new XSSFWorkbook();
@@ -81,6 +83,7 @@ namespace CodyMVC5HomeWork1.Controllers
             return File(files.ToArray(), "application/vnd.ms-excel", "Export.xlsx");
         }
 
+        [Action執行時間]
         [HandleError(View = "Error2")]
         [HttpPost]
         public ActionResult Index(FormCollection collection, string newSort, string oldSort, string sortDesc)
@@ -132,6 +135,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Details/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Details(int? id)
         {
@@ -148,6 +152,7 @@ namespace CodyMVC5HomeWork1.Controllers
             return View(contactsdetail);
         }
 
+        [Action執行時間]
         [HttpPost]
         public ActionResult Details(IList<客戶聯絡人ViewModel> data)
         {
@@ -181,6 +186,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Create
+        [Action執行時間]
         public ActionResult Create()
         {
 
@@ -192,6 +198,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶資料/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類")] 客戶資料 客戶資料)
@@ -207,6 +214,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Edit/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
         {
@@ -226,6 +234,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶資料/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類")] 客戶資料 客戶資料)
@@ -242,6 +251,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶資料/Delete/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Delete(int? id)
         {
@@ -258,6 +268,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // POST: 客戶資料/Delete/5
+        [Action執行時間]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

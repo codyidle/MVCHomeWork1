@@ -17,6 +17,7 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶聯絡人
+        [Action執行時間]
         [HandleError(View = "Error2")]
         public ActionResult Index(string newSort, string oldSort, string sortDesc, string KeyWord, string JobList,string IsExport)
         {
@@ -84,6 +85,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
 
+        [Action執行時間]
         [HttpPost]
         public ActionResult Index(FormCollection collection, string newSort, string oldSort, string sortDesc)
         {
@@ -127,6 +129,7 @@ namespace CodyMVC5HomeWork1.Controllers
             return View(data.ToList());
         }
 
+        [Action執行時間]
         // GET: 客戶聯絡人/Details/5
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Details(int? id)
@@ -143,6 +146,7 @@ namespace CodyMVC5HomeWork1.Controllers
             return View(客戶聯絡人);
         }
 
+        [Action執行時間]
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
@@ -153,6 +157,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶聯絡人/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
@@ -169,6 +174,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶聯絡人/Edit/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
         {
@@ -188,6 +194,7 @@ namespace CodyMVC5HomeWork1.Controllers
         // POST: 客戶聯絡人/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
@@ -204,6 +211,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // GET: 客戶聯絡人/Delete/5
+        [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Delete(int? id)
         {
@@ -220,6 +228,7 @@ namespace CodyMVC5HomeWork1.Controllers
         }
 
         // POST: 客戶聯絡人/Delete/5
+        [Action執行時間]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
