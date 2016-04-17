@@ -1,10 +1,9 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
-	
+
 namespace CodyMVC5HomeWork1.Models
-{   
-	public  class 客戶資料Repository : EFRepository<客戶資料>, I客戶資料Repository
+{
+    public  class 客戶資料Repository : EFRepository<客戶資料>, I客戶資料Repository
 	{
         public 客戶資料 Find (int id)
         {
@@ -22,6 +21,53 @@ namespace CodyMVC5HomeWork1.Models
 
             return data;
         }
+
+
+        public string GetHashPW(string account)
+        {
+            var pw = string.Empty;
+            if (account != null && account != "")
+            {
+                var data = this.All().Where(客 => 客.帳號 == account);
+                foreach (var item in data)
+                {
+                    pw = item.密碼;
+                }
+            }
+
+            return pw;
+        }
+
+        public string GetUserName(string account)
+        {
+            var name = string.Empty;
+            if (account != null && account != "")
+            {
+                var data = this.All().Where(客 => 客.帳號 == account);
+                foreach (var item in data)
+                {
+                    name = item.客戶名稱;
+                }
+            }
+
+            return name;
+        }
+
+        public string GetUserId(string account)
+        {
+            int? id=null;
+            if (account != null && account != "")
+            {
+                var data = this.All().Where(客 => 客.帳號 == account);
+                foreach (var item in data)
+                {
+                    id = item.Id;
+                }
+            }
+
+            return id.Value.ToString();
+        }
+
 
         public override IQueryable<客戶資料> All()
         {

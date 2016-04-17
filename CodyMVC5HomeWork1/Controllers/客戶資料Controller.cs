@@ -10,6 +10,7 @@ using CodyMVC5HomeWork1.Models;
 using System.Collections;
 using System.IO;
 using NPOI.XSSF.UserModel;
+using System.Web.Security;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
@@ -18,6 +19,7 @@ namespace CodyMVC5HomeWork1.Controllers
         //private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
+        
         [Action執行時間]
         [HandleError(View = "Error2")]
         public ActionResult Index(string newSort,string oldSort ,string sortDesc,string KeyWord, string Category,string IsExport)
@@ -191,7 +193,7 @@ namespace CodyMVC5HomeWork1.Controllers
         {
 
 
-            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid","Cname");
+            ViewBag.Category = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname");
             return View();
         }
 
@@ -209,11 +211,12 @@ namespace CodyMVC5HomeWork1.Controllers
                 repo客戶資料.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", 客戶資料.客戶分類);
+            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname");
             return View(客戶資料);
         }
 
         // GET: 客戶資料/Edit/5
+        [HandleError(View = "Error2")]
         [Action執行時間]
         [HandleError(ExceptionType = typeof(ArgumentException), View = "Error2")]
         public ActionResult Edit(int? id)
@@ -227,18 +230,27 @@ namespace CodyMVC5HomeWork1.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname", 客戶資料.客戶分類);
+
+            
+
+
+            ViewBag.客戶分類 = new SelectList(repo客戶資料.CatgoryList(), "Cid", "Cname",客戶資料.客戶分類);
             return View(客戶資料);
         }
 
         // POST: 客戶資料/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
+        [HandleError(View = "Error2")]
         [Action執行時間]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類")] 客戶資料 客戶資料)
+        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類,帳號,密碼")] 客戶資料 客戶資料)
         {
+            if (!string.IsNullOrEmpty(客戶資料.密碼))
+                客戶資料.密碼 = FormsAuthentication.HashPasswordForStoringInConfigFile(客戶資料.密碼, "SHA1");
+
+
             if (ModelState.IsValid)
             {
                 var db客戶資料 = (客戶資料Entities) repo客戶資料.UnitOfWork.Context;
@@ -288,8 +300,11 @@ namespace CodyMVC5HomeWork1.Controllers
             base.Dispose(disposing);
         }
 
-
-
+        
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
 
 
     }

@@ -7,8 +7,8 @@ using System.Web.Mvc;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
-    [Authorize(Roles = "RoleAdmin")]
-    public abstract class BaseController : Controller
+
+    public abstract class Base2Controller : Controller
     {
 
         protected 客戶資料Repository repo客戶資料 = RepositoryHelper.Get客戶資料Repository();

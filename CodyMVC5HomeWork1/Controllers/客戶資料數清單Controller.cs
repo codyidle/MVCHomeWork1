@@ -7,7 +7,7 @@ using CodyMVC5HomeWork1.Models;
 
 namespace CodyMVC5HomeWork1.Controllers
 {
-
+    [Authorize(Roles = "RoleAdmin")]
     public class 客戶資料數清單Controller : Controller
     {
         private 客戶資料Entities db = new 客戶資料Entities();

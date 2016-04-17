@@ -49,17 +49,12 @@ namespace CodyMVC5HomeWork1.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "電子郵件")]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string 帳號 { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "密碼")]
-        public string Password { get; set; }
+        public string 密碼 { get; set; }
 
-        [Display(Name = "記住我?")]
-        public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
